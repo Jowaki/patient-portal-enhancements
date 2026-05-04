@@ -27,7 +27,16 @@ public class PatientService : IPatientService
 
     public async Task<PatientResponse> CreateAsync(CreatePatientRequest request)
     {
-        // BUG: no validation on DateOfBirth — accepts future dates (#2)
+        if(request.DateOfBirth >= DateTime.UtcNow.Date)
+        {
+            throw new ArgumentException("Date of birth cannot be in the past.");
+        }
+
+        if (request.DateOfBirth < DateTime.UtcNow.AddYears(-130))
+        {
+            throw new ArgumentException("Date of birth cannot be more than 130 years in the past.");
+        }
+        
         var patient = new Patient
         {
             FirstName = request.FirstName,
