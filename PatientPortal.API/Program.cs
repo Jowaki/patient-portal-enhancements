@@ -3,10 +3,12 @@ using PatientPortal.Core.Interfaces;
 using PatientPortal.Infrastructure.Data;
 using PatientPortal.Infrastructure.Repositories;
 using PatientPortal.Infrastructure.Services;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
