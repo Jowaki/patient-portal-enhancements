@@ -86,4 +86,22 @@ public class PatientServiceTests
         result.FirstName.Should().Be("Jane");
         result.Id.Should().Be(1);
     }
+
+    [Fact]
+public async Task CreateAsync_ThrowsArgumentException_WhenDobIsToday()
+{
+    var request = new CreatePatientRequest
+    {
+        FirstName = "John",
+        LastName = "Doe",
+        DateOfBirth = DateTime.UtcNow.Date,
+        PhoneNumber = "555-1234",
+        Email = "john@example.com"
+    };
+
+    var act = async () => await _service.CreateAsync(request);
+
+    await act.Should().ThrowAsync<ArgumentException>()
+        .WithMessage("*past*");
+}
 }
