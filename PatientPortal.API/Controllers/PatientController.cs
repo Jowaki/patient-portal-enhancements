@@ -32,11 +32,19 @@ public class PatientController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreatePatientRequest request)
     {
-        // BUG: validation missing here too — DateOfBirth not checked (#2)
+        
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var created = await _service.CreateAsync(request);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
-    }
+        try
+        {
+            var created = await _service.CreateAsync(request);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        
+   }
 }
