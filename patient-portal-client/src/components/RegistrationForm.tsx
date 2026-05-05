@@ -61,7 +61,7 @@ export default function RegistrationForm() {
     setApiError(null);
 
     try {
-      const response = await fetch('http://localhost:5134/api/patient', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/patient`,  {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -183,11 +183,12 @@ export default function RegistrationForm() {
         <div className="api-error">{apiError}</div>
       )}
 
-      <button
-        type="submit"
-        className="btn-primary"
-        disabled={submitStatus === 'loading'}
-      >
+        <button
+            type="submit"
+            className="btn-primary"
+            disabled={submitStatus === 'loading'}
+            aria-busy={submitStatus === 'loading'}
+             >
         {submitStatus === 'loading' ? 'Registering...' : 'Register Patient'}
       </button>
 
